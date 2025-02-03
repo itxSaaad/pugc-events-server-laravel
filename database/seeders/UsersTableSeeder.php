@@ -13,17 +13,17 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         User::create([
-            'id' => Str::uuid(),
+            'id' => (string) Str::uuid(),
             'name' => 'Admin User',
-            'email' => 'admin@pugc.com',
+            'email' => 'admin@pugc.edu.pk',
             'password' => Hash::make('Admin@123'),
             'role' => 'admin',
         ]);
 
         User::create([
-            'id' => Str::uuid(),
+            'id' => (string) Str::uuid(),
             'name' => 'Student User',
-            'email' => 'student@pugc.com',
+            'email' => 'student@pugc.edu.pk',
             'password' => Hash::make('Student@123'),
             'role' => 'student',
         ]);
