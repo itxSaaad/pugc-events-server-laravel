@@ -22,7 +22,29 @@ class EventsTableSeeder extends Seeder
             'date' => '2025-03-01',
             'time' => '14:00:00',
             'location' => 'Room 101',
-            'created_by' => Str::uuid(),
+            'created_by' => '8e827d4a-67c6-4cd1-a4ae-1e0cfcc41d2e'
+        ]);
+
+        Event::create([
+            'id' => Str::uuid(),
+            'title' => 'Tech Talk: Laravel Advanced',
+            'description' => 'An informative talk on Laravel framework for advanced users.',
+            'department' => 'Computer Science',
+            'date' => '2025-03-15',
+            'time' => '14:00:00',
+            'location' => 'Room 101',
+            'created_by' => '8e827d4a-67c6-4cd1-a4ae-1e0cfcc41d2e'
+        ]);
+
+        Event::create([
+            'id' => Str::uuid(),
+            'title' => 'Tech Talk: React Basics',
+            'description' => 'An informative talk on React framework for beginners.',
+            'department' => 'Computer Science',
+            'date' => '2025-04-01',
+            'time' => '14:00:00',
+            'location' => 'Room 101',
+            'created_by' => '8e827d4a-67c6-4cd1-a4ae-1e0cfcc41d2e'
         ]);
     }
 }
