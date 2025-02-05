@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rules\Password;
 use Exception;
 
-class AuthController
+class AuthController extends BaseController
 {
     public function register(Request $request)
     {
@@ -48,27 +48,15 @@ class AuthController
 
             $token = $user->createToken('pugc-events')->plainTextToken;
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Registration successful',
-                'data' => [
-                    'user' => $user->makeHidden(['password']),
-                    'token' => $token,
-                ]
-            ], 201);
+            return $this->sendResponse([
+                'user' => $user->makeHidden(['password']),
+                'token' => $token,
+            ], 'Registration successful', 201);
         } catch (ValidationException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
+            return $this->sendError('Validation failed', 422, $e->errors());
         } catch (Exception $e) {
             report($e); // Log the error
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Registration failed',
-                'error' => config('app.debug') ? $e->getMessage() : 'An unexpected error occurred'
-            ], 500);
+            return $this->sendError('Registration failed', 500, config('app.debug') ? $e->getMessage() : 'An unexpected error occurred');
         }
     }
 
@@ -98,27 +86,15 @@ class AuthController
 
             $token = $user->createToken('pugc-events')->plainTextToken;
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Login successful',
-                'data' => [
-                    'user' => $user->makeHidden(['password']),
-                    'token' => $token,
-                ]
-            ], 200);
+            return $this->sendResponse([
+                'user' => $user->makeHidden(['password']),
+                'token' => $token,
+            ], 'Login successful');
         } catch (ValidationException $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
+            return $this->sendError('Validation failed', 422, $e->errors());
         } catch (Exception $e) {
             report($e);
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Login failed',
-                'error' => config('app.debug') ? $e->getMessage() : 'An unexpected error occurred'
-            ], 500);
+            return $this->sendError('Login failed', 500, config('app.debug') ? $e->getMessage() : 'An unexpected error occurred');
         }
     }
 
@@ -128,25 +104,15 @@ class AuthController
             $user = $request->user();
 
             if (!$user) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Unauthorized'
-                ], 401);
+                return $this->sendError('Unauthorized', 401);
             }
 
-            return response()->json([
-                'status' => 'success',
-                'data' => [
-                    'user' => $user->makeHidden(['password'])
-                ]
-            ], 200);
+            return $this->sendResponse([
+                'user' => $user->makeHidden(['password'])
+            ], 'Profile fetched successfully');
         } catch (Exception $e) {
             report($e);
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Failed to fetch profile',
-                'error' => config('app.debug') ? $e->getMessage() : 'An unexpected error occurred'
-            ], 500);
+            return $this->sendError('Failed to fetch profile', 500, config('app.debug') ? $e->getMessage() : 'An unexpected error occurred');
         }
     }
 
@@ -156,25 +122,15 @@ class AuthController
             $user = $request->user();
 
             if (!$user) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Unauthorized'
-                ], 401);
+                return $this->sendError('Unauthorized', 401);
             }
 
             $user->currentAccessToken()->delete();
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Logged out successfully'
-            ], 200);
+            return $this->sendResponse([], 'Logged out successfully');
         } catch (Exception $e) {
             report($e);
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Logout failed',
-                'error' => config('app.debug') ? $e->getMessage() : 'An unexpected error occurred'
-            ], 500);
+            return $this->sendError('Logout failed', 500, config('app.debug') ? $e->getMessage() : 'An unexpected error occurred');
         }
     }
 }
