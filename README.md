@@ -1,66 +1,199 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PUGC Events - Laravel API server for PUGC Events Mobile App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> This project is a part of the Enterprise Application Development course at PUGC. The project is developed by the students of the BS Computer Science program at PUGC. The project is developed using the Laravel framework for the API server and the React-Native framework for the mobile app.
 
-## About Laravel
+<br/>
+<div align="center">
+  <h3 align="center">PUGC Events - Laravel API</h3>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+  <p align="center">
+    A Laravel API server for the PUGC Events Mobile App
+    <br/>
+    <br/>
+    <a href="https://github.com/itxsaaad/pugc-events-server-laravel"><strong>Explore the docs »</strong></a>
+    <br/>
+    <br/>
+    <a href="https://github.com/itxsaaad/pugc-events-server-laravel/issues">Report Bug</a>
+    .
+    <a href="https://github.com/itxsaaad/pugc-events-server-laravel/issues">Request Feature</a>
+  </p>
+</div>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Table Of Contents
 
-## Learning Laravel
+-   [PUGC Events - Laravel API server for PUGC Events Mobile App](#pugc-events---laravel-api-server-for-pugc-events-mobile-app)
+    -   [Table Of Contents](#table-of-contents)
+    -   [About The Project](#about-the-project)
+    -   [Features](#features)
+        -   [User Authentication](#user-authentication)
+        -   [Events](#events)
+        -   [RSVP](#rsvp)
+    -   [Built With](#built-with)
+    -   [Getting Started](#getting-started)
+        -   [Prerequisites](#prerequisites)
+        -   [Installation](#installation)
+    -   [Roadmap](#roadmap)
+    -   [Contributing](#contributing)
+    -   [Authors](#authors)
+    -   [License](#license)
+    -   [Support](#support)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## About The Project
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+PUGC Events is a Laravel API server for the PUGC Events Mobile App. The API server is built using the Laravel framework and provides endpoints for the mobile app to interact with the database. The API server is responsible for handling user authentication, event creation, event registration, event management, and other features of the mobile app.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Features
 
-## Laravel Sponsors
+### User Authentication
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   **User Registration**: User can register using their name, email and password.
+-   **User Login**: User can login using their email and password.
+-   **User Logout**: User can logout from the app.
+-   **User Profile**: User can view their profile information.
 
-### Premium Partners
+### Events
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   **Event Creation**: Admin can create an event with the following details:
+
+    -   Event Title
+    -   Event Description
+    -   Event Date
+    -   Event Time
+    -   Event Location
+
+-   **Event Update**: Admin can update the event details.
+-   **Event Deletion**: Admin can delete the event.
+-   **Event Details**: User can view the event details.
+-   **Event List**: User can view the list of all events.
+
+### RSVP
+
+-   **Event Registration**: User can register for an event.
+-   **Event Unregistration**: User can unregister from an event.
+
+## Built With
+
+-   [Laravel](https://laravel.com/) - The PHP Framework For Web Artisans
+-   [MySQL](https://www.mysql.com/) - The world's most popular open-source database
+
+## Getting Started
+
+### Prerequisites
+
+-   [PHP](https://www.php.net/) - PHP is a popular general-purpose scripting language that is especially suited to web development.
+-   [Composer](https://getcomposer.org/) - Composer is a dependency manager for PHP.
+-   [Node.js](https://nodejs.org/) - Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine.
+-   [NPM](https://www.npmjs.com/) - npm is the package manager for JavaScript.
+-   [MySQL](https://www.mysql.com/) - The world's most popular open-source database.
+-   [Git](https://git-scm.com/) - Git is a free and open-source distributed version control system.
+
+### Installation
+
+1. Clone the repo
+
+    ```sh
+    git clone https://github.com/itxSaaad/pugc-events-server-laravel.git
+    ```
+
+2. Install NPM packages
+
+    ```sh
+    npm install
+    ```
+
+3. Install Composer packages
+
+    ```sh
+    composer install
+    ```
+
+4. Create a new database in MySQL
+5. Copy the `.env.example` file to `.env` and update the database credentials
+
+    ```sh
+    cp .env.example .env
+    ```
+
+6. Generate a new application key
+
+    ```sh
+    php artisan key:generate
+    ```
+
+7. Run the database migrations
+
+    ```sh
+    php artisan migrate
+    ```
+
+8. Start the Laravel server
+
+    ```sh
+    php artisan serve
+    ```
+
+9. The Laravel server will start at `http://localhost:8000`
+10. You can now access the API server at `http://localhost:8000/api`
+11. For Hot Reload, you can run the following command
+
+    ```sh
+    npm run dev
+    ```
+
+## Roadmap
+
+See the [open issues](https://github.com/itxsaaad/pugc-events-server-laravel) for a list of proposed features (and known issues).
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-## Code of Conduct
+-   If you have suggestions for adding or removing projects, feel free to [open an issue](https://github.com/itxsaaad/pugc-events-server-laravel/issues/new) to discuss it, or directly create a pull request after you edit the _README.md_ file with necessary changes.
+-   Please make sure you check your spelling and grammar.
+-   Create individual PR for each suggestion.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
 
-## Security Vulnerabilities
+1. Fork the repo
+2. Clone the project
+3. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+4. Commit your changes (`git commit -m "Add some AmazingFeature"`)
+5. Push to the branch (`git push origin feature/AmazingFeature`)
+6. Open a pull request
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Authors
+
+-   **Muhammad Saad** - [itxsaaad](https://github.com/itxsaaad)
+-   **Mirza Moiz** - [mirza-moiz](https://github.com/mirza-moiz)
+-   **Hassnain Raza** - [hassnain512](https://github.com/hassnain512)
+
+See also the list of [contributors](https://github.com/itxsaaad/pugc-events-server-laravel/graphs/contributors)
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Support
+
+Give ⭐️ if you like this project!
+
+<a href="https://www.buymeacoffee.com/itxSaaad"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width="200" /></a>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+
+[contributors-shield]: https://img.shields.io/github/contributors/itxsaaad/pugc-events-server-laravel.svg?style=for-the-badge
+[contributors-url]: https://github.com/itxsaaad/pugc-events-server-laravel/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/itxsaaad/pugc-events-server-laravel.svg?style=for-the-badge
+[forks-url]: https://github.com/itxsaaad/pugc-events-server-laravel/network/members
+[stars-shield]: https://img.shields.io/github/stars/itxsaaad/pugc-events-server-laravel.svg?style=for-the-badge
+[stars-url]: https://github.com/itxsaaad/pugc-events-server-laravel/stargazers
+[issues-shield]: https://img.shields.io/github/issues/itxsaaad/pugc-events-server-laravel.svg?style=for-the-badge
+[issues-url]: https://github.com/itxsaaad/pugc-events-server-laravel/issues
+[license-shield]: https://img.shields.io/github/license/itxsaaad/pugc-events-server-laravel.svg?style=for-the-badge
+[license-url]: https://github.com/itxsaaad/pugc-events-server-laravel/blob/main/LICENSE.md
