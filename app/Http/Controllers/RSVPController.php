@@ -11,12 +11,11 @@ use Exception;
 
 class RSVPController extends BaseController
 {
-    public function index(Request $request, $eventId)
+    public function index(Request $request)
     {
-        $userId = $request->user()->id;
         try {
-            $rsvps = RSVP::where('user_id', $userId)
-                ->where('event_id', $eventId)
+            $rsvps = RSVP::query()
+                ->where('user_id', $request->user()->id)
                 ->where('status', true)
                 ->with('event')
                 ->get();
@@ -24,13 +23,13 @@ class RSVPController extends BaseController
             return $this->sendResponse([
                 'count' => $rsvps->count(),
                 'rsvps' => $rsvps
-            ], 'RSVPs fetched successfully');
+            ], 'RSVPs retrieved successfully');
         } catch (Exception $e) {
             report($e);
             return $this->sendError(
-                'Failed to fetch RSVPed events',
+                'Failed to retrieve RSVPs',
                 500,
-                config('app.debug') ? $e->getMessage() : 'An unexpected error occurred'
+                config('app.debug') ? $e->getMessage() : null
             );
         }
     }
@@ -38,65 +37,70 @@ class RSVPController extends BaseController
     public function getEventRSVPs($eventId)
     {
         try {
-            $rsvps = RSVP::with('user')
+            $rsvps = RSVP::query()
                 ->where('event_id', $eventId)
                 ->where('status', true)
+                ->with('user')
                 ->get();
 
             return $this->sendResponse([
                 'count' => $rsvps->count(),
                 'rsvps' => $rsvps,
-            ], 'Event RSVPs fetched successfully');
+            ], 'Event RSVPs retrieved successfully');
         } catch (Exception $e) {
             report($e);
             return $this->sendError(
-                'Failed to fetch event RSVPs',
+                'Failed to retrieve event RSVPs',
                 500,
-                config('app.debug') ? $e->getMessage() : 'An unexpected error occurred'
+                config('app.debug') ? $e->getMessage() : null
             );
         }
     }
 
     public function store(Request $request, $eventId)
     {
-        $userId = $request->user()->id;
-
         try {
-            $existingRSVP = RSVP::where('event_id', $eventId)
+            $userId = $request->user()->id;
+
+            $existingRSVP = RSVP::query()
+                ->where('event_id', $eventId)
                 ->where('user_id', $userId)
                 ->first();
 
             if ($existingRSVP) {
-                return $this->sendError('You have already RSVPed for this event', 400);
+                return $this->sendError('RSVP already exists for this event', 409);
             }
 
             $rsvp = RSVP::create([
-                'id' => (string) Str::uuid(),
+                'id' => Str::uuid()->toString(),
                 'user_id' => $userId,
                 'event_id' => $eventId,
                 'status' => true,
             ]);
 
-            return $this->sendResponse(['rsvp' => $rsvp], 'Successfully RSVPed for the event', 201);
+            return $this->sendResponse(
+                ['rsvp' => $rsvp],
+                'RSVP created successfully',
+                201
+            );
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed', 422, $e->errors());
         } catch (Exception $e) {
             report($e);
             return $this->sendError(
-                'Failed to RSVP',
+                'Failed to create RSVP',
                 500,
-                config('app.debug') ? $e->getMessage() : 'An unexpected error occurred'
+                config('app.debug') ? $e->getMessage() : null
             );
         }
     }
 
     public function destroy(Request $request, $eventId)
     {
-        $userId = $request->user()->id;
-
         try {
-            $rsvp = RSVP::where('event_id', $eventId)
-                ->where('user_id', $userId)
+            $rsvp = RSVP::query()
+                ->where('event_id', $eventId)
+                ->where('user_id', $request->user()->id)
                 ->first();
 
             if (!$rsvp) {
@@ -105,13 +109,17 @@ class RSVPController extends BaseController
 
             $rsvp->delete();
 
-            return $this->sendResponse([], 'RSVP canceled successfully');
+            return $this->sendResponse(
+                [],
+                'RSVP deleted successfully',
+                200
+            );
         } catch (Exception $e) {
             report($e);
             return $this->sendError(
-                'Failed to cancel RSVP',
+                'Failed to delete RSVP',
                 500,
-                config('app.debug') ? $e->getMessage() : 'An unexpected error occurred'
+                config('app.debug') ? $e->getMessage() : null
             );
         }
     }

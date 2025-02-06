@@ -11,7 +11,7 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = ['id', 'title', 'description', 'department', 'date', 'time', 'location', 'created_by'];
-
+    public $incrementing = false;
     protected $keyType = 'string';
 
     public function creator()

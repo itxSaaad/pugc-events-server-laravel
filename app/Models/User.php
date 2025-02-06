@@ -12,7 +12,7 @@ class User extends Model
     use HasApiTokens, HasFactory, HasUuids;
 
     protected $fillable = ['id', 'name', 'email', 'password', 'role'];
-
+    public $incrementing = false;
     protected $keyType = 'string';
 
     protected $hidden = ['password'];

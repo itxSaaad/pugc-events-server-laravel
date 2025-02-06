@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('events', [EventController::class, 'index']);
     Route::get('events/{id}', [EventController::class, 'show']);
 
-    Route::get('events/{eventId}/user/rsvp', [RSVPController::class, 'index']);
+    Route::get('events/user/rsvp', [RSVPController::class, 'index']);
     Route::get('events/{eventId}/rsvp', [RSVPController::class, 'getEventRSVPs']);
     Route::post('events/{eventId}/rsvp', [RSVPController::class, 'store']);
     Route::delete('events/{eventId}/rsvp', [RSVPController::class, 'destroy']);
