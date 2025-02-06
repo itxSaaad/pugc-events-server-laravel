@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\RSVP;
-use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\BaseController;
 use Exception;
 
 class RSVPController extends BaseController
 {
-    public function index()
+    public function index(Request $request, $eventId)
     {
+        $userId = $request->user()->id;
         try {
-            $userId = Auth::id();
-            $rsvps = RSVP::where('user_id', $userId)->with('event')->get();
+            $rsvps = RSVP::where('user_id', $userId)
+                ->where('event_id', $eventId)
+                ->where('status', true)
+                ->with('event')
+                ->get();
 
             return $this->sendResponse([
                 'count' => $rsvps->count(),
@@ -32,7 +35,7 @@ class RSVPController extends BaseController
         }
     }
 
-    public function getEventRSVPs(string $eventId)
+    public function getEventRSVPs($eventId)
     {
         try {
             $rsvps = RSVP::with('user')
@@ -56,10 +59,9 @@ class RSVPController extends BaseController
 
     public function store(Request $request, $eventId)
     {
-        try {
-            $userId = Auth::id();
-            $event = Event::findOrFail($eventId);
+        $userId = $request->user()->id;
 
+        try {
             $existingRSVP = RSVP::where('event_id', $eventId)
                 ->where('user_id', $userId)
                 ->first();
@@ -70,9 +72,9 @@ class RSVPController extends BaseController
 
             $rsvp = RSVP::create([
                 'id' => (string) Str::uuid(),
-                'event_id' => $eventId,
                 'user_id' => $userId,
-                'status' => true
+                'event_id' => $eventId,
+                'status' => true,
             ]);
 
             return $this->sendResponse(['rsvp' => $rsvp], 'Successfully RSVPed for the event', 201);
@@ -88,10 +90,11 @@ class RSVPController extends BaseController
         }
     }
 
-    public function destroy($eventId)
+    public function destroy(Request $request, $eventId)
     {
+        $userId = $request->user()->id;
+
         try {
-            $userId = Auth::id();
             $rsvp = RSVP::where('event_id', $eventId)
                 ->where('user_id', $userId)
                 ->first();

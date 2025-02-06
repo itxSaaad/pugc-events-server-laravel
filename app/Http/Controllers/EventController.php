@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Exception;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Auth;
 
 class EventController extends BaseController
 {
@@ -42,7 +41,7 @@ class EventController extends BaseController
                 'date' => $validated['date'],
                 'time' => $validated['time'],
                 'location' => $validated['location'],
-                'created_by' => Auth::id()
+                'created_by' => $request->user()->id,
             ]);
 
             return $this->sendResponse(['event' => $event], 'Event created successfully', 201);
