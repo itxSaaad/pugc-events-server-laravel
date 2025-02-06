@@ -12,9 +12,10 @@ class RSVP extends Model
     use HasFactory;
 
     protected $fillable = ['id', 'event_id', 'user_id', 'status'];
-
+    public $incrementing = false;
     protected $keyType = 'string';
     protected $table = 'rsvps';
+
 
     public function event(): BelongsTo
     {
