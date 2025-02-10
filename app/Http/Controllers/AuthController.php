@@ -15,8 +15,8 @@ class AuthController extends BaseController
     public function register(Request $request)
     {
         try {
-            $request->validate([
-                'name' => ['required', 'string', 'max:255', 'regex:/^[\pL\s\-]+$/u'], // Only letters, spaces and hyphens
+            $validatedData = $request->validate([
+                'name' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[\pL\s\-]+$/u'],
                 'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:users'],
                 'password' => [
                     'required',
@@ -30,19 +30,16 @@ class AuthController extends BaseController
                 ],
             ], [
                 'name.regex' => 'Name can only contain letters, spaces and hyphens',
+                'name.min' => 'Name must be at least 2 characters long',
                 'email.email' => 'Please provide a valid email address',
                 'password.uncompromised' => 'This password has been leaked in a data breach. Please choose another.'
             ]);
 
-            if (strlen($request->name) < 2) {
-                throw ValidationException::withMessages(['name' => 'Name must be at least 2 characters long']);
-            }
-
             $user = User::create([
-                'id' => (string) Str::uuid(),
-                'name' => trim($request->name),
-                'email' => strtolower($request->email),
-                'password' => Hash::make($request->password),
+                'id' => Str::uuid()->toString(),
+                'name' => trim($validatedData['name']),
+                'email' => strtolower($validatedData['email']),
+                'password' => Hash::make($validatedData['password']),
                 'role' => 'student',
             ]);
 
@@ -55,35 +52,28 @@ class AuthController extends BaseController
         } catch (ValidationException $e) {
             return $this->sendError('Validation failed', 422, $e->errors());
         } catch (Exception $e) {
-            report($e); // Log the error
-            return $this->sendError('Registration failed', 500, config('app.debug') ? $e->getMessage() : 'An unexpected error occurred');
+            report($e);
+            return $this->sendError('Registration failed', 500, $this->getErrorMessage($e));
         }
     }
 
     public function login(Request $request)
     {
         try {
-            $request->validate([
+            $validatedData = $request->validate([
                 'email' => ['required', 'string', 'email:rfc,dns'],
                 'password' => ['required', 'string', 'min:8'],
             ]);
 
-            $user = User::where('email', strtolower($request->email))->first();
+            $user = User::where('email', strtolower($validatedData['email']))->first();
 
-            if (!$user) {
+            if (!$user || !Hash::check($validatedData['password'], $user->password)) {
                 throw ValidationException::withMessages([
-                    'email' => ['Invalid email address/password']
-                ]);
-            }
-
-            if (!Hash::check($request->password, $user->password)) {
-                throw ValidationException::withMessages([
-                    'password' => ['The provided password is incorrect.']
+                    'email' => ['Invalid credentials']
                 ]);
             }
 
             $user->tokens()->delete();
-
             $token = $user->createToken('pugc-events')->plainTextToken;
 
             return $this->sendResponse([
@@ -94,25 +84,26 @@ class AuthController extends BaseController
             return $this->sendError('Validation failed', 422, $e->errors());
         } catch (Exception $e) {
             report($e);
-            return $this->sendError('Login failed', 500, config('app.debug') ? $e->getMessage() : 'An unexpected error occurred');
+            return $this->sendError('Login failed', 500, $this->getErrorMessage($e));
         }
     }
 
     public function profile(Request $request)
     {
         try {
-            $user = $request->user();
+            $userId = $request->user()->id;
 
-            if (!$user) {
-                return $this->sendError('Unauthorized', 401);
+            $existingUser = User::find($userId)->with('rsvps')->first();
+
+            if (!$existingUser) {
+                return $this->sendError('User not found', 404);
             }
-
             return $this->sendResponse([
-                'user' => $user->makeHidden(['password'])
-            ], 'Profile fetched successfully');
+                'user' => $existingUser->makeHidden(['password'])
+            ], 'Profile retrieved successfully');
         } catch (Exception $e) {
             report($e);
-            return $this->sendError('Failed to fetch profile', 500, config('app.debug') ? $e->getMessage() : 'An unexpected error occurred');
+            return $this->sendError('Failed to retrieve profile', 500, $this->getErrorMessage($e));
         }
     }
 
@@ -127,10 +118,15 @@ class AuthController extends BaseController
 
             $user->currentAccessToken()->delete();
 
-            return $this->sendResponse([], 'Logged out successfully');
+            return $this->sendResponse(null, 'Logged out successfully');
         } catch (Exception $e) {
             report($e);
-            return $this->sendError('Logout failed', 500, config('app.debug') ? $e->getMessage() : 'An unexpected error occurred');
+            return $this->sendError('Logout failed', 500, $this->getErrorMessage($e));
         }
+    }
+
+    private function getErrorMessage(Exception $e)
+    {
+        return config('app.debug') ? $e->getMessage() : 'An unexpected error occurred';
     }
 }

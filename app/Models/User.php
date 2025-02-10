@@ -16,4 +16,9 @@ class User extends Model
     protected $keyType = 'string';
 
     protected $hidden = ['password'];
+
+    public function rsvps()
+    {
+        return $this->hasMany(RSVP::class);
+    }
 }
