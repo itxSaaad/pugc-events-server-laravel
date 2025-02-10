@@ -27,5 +27,13 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('Student@123'),
             'role' => 'student',
         ]);
+
+        User::create([
+            'id' => (string) Str::uuid(),
+            'name' => 'Test User',
+            'email' => 'test@pugc.edu.pk',
+            'password' => Hash::make('Test@123'),
+            'role' => 'student',
+        ]);
     }
 }

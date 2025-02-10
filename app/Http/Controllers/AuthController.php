@@ -93,7 +93,7 @@ class AuthController extends BaseController
         try {
             $userId = $request->user()->id;
 
-            $existingUser = User::find($userId)->with('rsvps')->first();
+            $existingUser = User::with('rsvps')->find($userId);
 
             if (!$existingUser) {
                 return $this->sendError('User not found', 404);

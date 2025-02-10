@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Event;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -14,6 +14,8 @@ class EventsTableSeeder extends Seeder
      */
     public function run()
     {
+        $adminId = User::where('role', 'admin')->first()->id;
+
         Event::create([
             'id' => Str::uuid(),
             'title' => 'Tech Talk: Laravel Basics',
@@ -22,7 +24,7 @@ class EventsTableSeeder extends Seeder
             'date' => '2025-03-01',
             'time' => '14:00:00',
             'location' => 'Room 101',
-            'created_by' => '8e827d4a-67c6-4cd1-a4ae-1e0cfcc41d2e'
+            'created_by' => $adminId
         ]);
 
         Event::create([
@@ -33,7 +35,7 @@ class EventsTableSeeder extends Seeder
             'date' => '2025-03-15',
             'time' => '14:00:00',
             'location' => 'Room 101',
-            'created_by' => '8e827d4a-67c6-4cd1-a4ae-1e0cfcc41d2e'
+            'created_by' => $adminId
         ]);
 
         Event::create([
@@ -44,7 +46,7 @@ class EventsTableSeeder extends Seeder
             'date' => '2025-04-01',
             'time' => '14:00:00',
             'location' => 'Room 101',
-            'created_by' => '8e827d4a-67c6-4cd1-a4ae-1e0cfcc41d2e'
+            'created_by' => $adminId
         ]);
     }
 }

@@ -17,7 +17,7 @@ class RsvpsTableSeeder extends Seeder
     public function run()
     {
         $user1 = User::where('email', 'student@pugc.edu.pk')->first();
-        $user2 = User::where('email', 'student@pugc.com')->first();
+        $user2 = User::where('email', 'test@pugc.edu.pk')->first();
 
         $event1 = Event::where('title', 'Tech Talk: Laravel Basics')->first();
         $event2 = Event::where('title', 'Tech Talk: Laravel Advanced')->first();
